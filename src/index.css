@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 40 30% 97%;
+        --foreground: 200 25% 15%;
+        --card: 40 25% 99%;
+        --card-foreground: 200 25% 15%;
+        --popover: 40 25% 99%;
+        --popover-foreground: 200 25% 15%;
+        --primary: 160 45% 35%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 40 30% 93%;
+        --secondary-foreground: 200 25% 20%;
+        --muted: 40 20% 94%;
+        --muted-foreground: 200 10% 45%;
+        --accent: 35 60% 50%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 0 72% 51%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 40 20% 88%;
+        --input: 40 20% 88%;
+        --ring: 160 45% 35%;
+        --chart-1: 160 45% 35%;
+        --chart-2: 35 60% 50%;
+        --chart-3: 200 25% 40%;
+        --chart-4: 40 30% 60%;
+        --chart-5: 160 30% 50%;
+        --radius: 0.75rem;
+        --font-heading: 'Tajawal', ui-sans-serif, system-ui, sans-serif;
+        --font-body: 'Tajawal', ui-sans-serif, system-ui, sans-serif;
+        --font-display: 'Tajawal', ui-sans-serif, system-ui, sans-serif;
+        --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        --sidebar-background: 0 0% 98%;
+        --sidebar-foreground: 240 5.3% 26.1%;
+        --sidebar-primary: 240 5.9% 10%;
+        --sidebar-primary-foreground: 0 0% 98%;
+        --sidebar-accent: 240 4.8% 95.9%;
+        --sidebar-accent-foreground: 240 5.9% 10%;
+        --sidebar-border: 220 13% 91%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
+    }
+
+    .dark {
+        --background: 180 8% 6%;
+        --foreground: 40 15% 90%;
+        --card: 180 8% 9%;
+        --card-foreground: 40 15% 90%;
+        --popover: 180 8% 10%;
+        --popover-foreground: 40 15% 90%;
+        --primary: 160 35% 42%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 180 8% 14%;
+        --secondary-foreground: 40 12% 85%;
+        --muted: 180 8% 14%;
+        --muted-foreground: 40 8% 58%;
+        --accent: 35 45% 48%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 0 45% 35%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 180 8% 18%;
+        --input: 180 8% 18%;
+        --ring: 160 35% 42%;
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+        --sidebar-background: 240 5.9% 10%;
+        --sidebar-foreground: 240 4.8% 95.9%;
+        --sidebar-primary: 224.3 76.3% 48%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 240 3.7% 15.9%;
+        --sidebar-accent-foreground: 240 4.8% 95.9%;
+        --sidebar-border: 240 3.7% 15.9%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+
+    body {
+        @apply bg-background text-foreground font-body;
+    }
+}
