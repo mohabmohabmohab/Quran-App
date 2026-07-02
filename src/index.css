@@ -95,7 +95,6 @@
 /* تعديل مخصص للتحكم في شكل أزرار الـ Spin لـ حقول الأرقام */
 /* ======================================================== */
 
-/* WebKit (Chrome, Safari, Edge) - جعل الأزرار شفافة */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   background-color: transparent !important;
@@ -103,18 +102,158 @@ input[type="number"]::-webkit-outer-spin-button {
   cursor: pointer;
 }
 
-/* في الوضع المظلم، عكس الألوان لجعل الأزرار مناسبة */
 .dark input[type="number"]::-webkit-inner-spin-button,
 .dark input[type="number"]::-webkit-outer-spin-button {
   filter: invert(1);
 }
 
-/* إخفاء أزرار spin في فايرفوكس (لأنها لا تدعم التخصيص بسهولة) */
 input[type="number"] {
   -moz-appearance: textfield;
 }
 
-/* تحسين إضافي: جعل التصميم العام يتناسب مع الوضع المظلم في المتصفحات التي تدعم color-scheme */
 .dark input[type="number"] {
   color-scheme: dark;
+}
+
+/* ============================================================ */
+/* تخصيص مظهر Sonner - RTL كامل */
+/* ============================================================ */
+
+/* تنسيق التوست نفسه */
+.murajaa-toast {
+  background: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2) !important;
+  font-family: var(--font-body) !important;
+  direction: rtl !important;
+  transition: all 0.2s ease !important;
+}
+
+/* تأثير hover على التوست */
+.murajaa-toast:hover {
+  border-color: hsl(var(--primary) / 0.4) !important;
+  box-shadow: 0 15px 40px -15px rgba(0, 0, 0, 0.25) !important;
+  transform: scale(1.01) !important;
+}
+
+/* رسائل النجاح */
+.murajaa-toast[data-type="success"] {
+  border-right: 4px solid hsl(var(--primary)) !important;
+}
+
+/* رسائل الخطأ */
+.murajaa-toast[data-type="error"] {
+  border-right: 4px solid hsl(var(--destructive)) !important;
+}
+
+/* رسائل المعلومات */
+.murajaa-toast[data-type="info"] {
+  border-right: 4px solid hsl(var(--accent)) !important;
+}
+
+/* أيقونات */
+.murajaa-toast [data-icon="success"] {
+  color: hsl(var(--primary)) !important;
+}
+.murajaa-toast [data-icon="error"] {
+  color: hsl(var(--destructive)) !important;
+}
+.murajaa-toast [data-icon="info"] {
+  color: hsl(var(--accent)) !important;
+}
+
+/* عنوان الرسالة */
+.murajaa-toast [data-title] {
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+/* نص الوصف */
+.murajaa-toast [data-description] {
+  font-size: 0.85rem !important;
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+/* ============================================================ */
+/* زر الإغلاق (X) في الزاوية اليسرى العلوية - تجاوز تام */
+/* ============================================================ */
+
+/* ✅ استهداف الزر عبر كل الطرق الممكنة */
+.murajaa-toaster .murajaa-toast [data-close-button],
+.murajaa-toaster .murajaa-toast button[data-close-button],
+.murajaa-toaster [data-close-button],
+.murajaa-toast [data-close-button] {
+  position: absolute !important;
+  top: 8px !important;
+  left: 8px !important;
+  right: auto !important;
+  inset-inline-start: 8px !important;
+  inset-inline-end: auto !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  border-radius: 50% !important;
+  border: 1px solid hsl(var(--border) / 0.5) !important;
+  background: transparent !important;
+  color: hsl(var(--muted-foreground)) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
+  transform: none !important;
+  scale: 1 !important;
+  z-index: 10 !important;
+  opacity: 1 !important;
+}
+
+/* ✅ عند التمرير فوق زر الإغلاق */
+.murajaa-toaster .murajaa-toast [data-close-button]:hover,
+.murajaa-toaster .murajaa-toast button[data-close-button]:hover,
+.murajaa-toaster [data-close-button]:hover,
+.murajaa-toast [data-close-button]:hover {
+  background-color: hsl(var(--muted) / 0.2) !important;
+  color: hsl(var(--foreground)) !important;
+  border-color: hsl(var(--primary) / 0.5) !important;
+  transform: none !important;
+  scale: 1 !important;
+}
+
+/* ✅ عند الضغط */
+.murajaa-toaster .murajaa-toast [data-close-button]:active,
+.murajaa-toaster .murajaa-toast button[data-close-button]:active,
+.murajaa-toaster [data-close-button]:active,
+.murajaa-toast [data-close-button]:active {
+  background-color: hsl(var(--muted) / 0.4) !important;
+  transform: none !important;
+  scale: 1 !important;
+}
+
+/* ✅ إزالة أي تنسيقات من Sonner قد تؤثر على الموضع */
+[data-sonner-toast] [data-close-button] {
+  position: absolute !important;
+  top: 8px !important;
+  left: 8px !important;
+  right: auto !important;
+  inset-inline-start: 8px !important;
+  inset-inline-end: auto !important;
+}
+
+/* ✅ منع أي تغيير غير مرغوب */
+.murajaa-toast:hover {
+  transform: scale(1.01) !important;
+}
+
+.murajaa-toast [data-close-button]:hover,
+.murajaa-toast [data-close-button]:focus,
+.murajaa-toast [data-close-button]:active {
+  transform: none !important;
+  scale: 1 !important;
 }

@@ -6,7 +6,43 @@ import Dashboard from "@/components/quran/Dashboard";
 import { BookOpen, Moon, Sun, AlertCircle, Download, Upload } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
+
+// ✅ دالة لعرض توست مع زر إغلاق - الزاوية اليسرى العلوية (بدون translate-x)
+const showCustomToast = (type, title, description) => {
+  const dismiss = () => toast.dismiss();
+  
+  const content = (
+    <div className="relative w-full pe-8">
+      <button
+        onClick={dismiss}
+        className="absolute top-0 end-0 w-7 h-7 rounded-full border border-border/50 bg-background/80 hover:bg-muted/50 flex items-center justify-center transition-colors z-10 shadow-sm"
+        style={{ insetInlineEnd: '-75px', transform: 'none' }}
+        aria-label="إغلاق"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+      
+      <div className="ps-6">
+        <p className="font-semibold text-foreground">{title}</p>
+        {description && <p className="text-sm text-muted-foreground mt-0.5">{description}</p>}
+      </div>
+    </div>
+  );
+
+  if (type === 'success') {
+    toast.success(content, { duration: 4000, className: "murajaa-toast" });
+  } else if (type === 'error') {
+    toast.error(content, { duration: 4000, className: "murajaa-toast" });
+  } else if (type === 'info') {
+    toast.info(content, { duration: 4000, className: "murajaa-toast" });
+  } else {
+    toast(content, { duration: 4000, className: "murajaa-toast" });
+  }
+};
 
 export default function Home() {
   const [allPlans, setAllPlans] = useState([]);
@@ -71,10 +107,7 @@ export default function Home() {
     setAllPlans(prev => [...prev, newPlan]);
     setActivePlan(newPlan);
     setShowCreateForm(false);
-    toast({
-      title: "تم إنشاء الخطة بنجاح",
-      description: `الخطة "${newPlan.name}" جاهزة للبدء.`,
-    });
+    showCustomToast('success', 'تم إنشاء الخطة بنجاح', `الخطة "${newPlan.name}" جاهزة للبدء.`);
   };
 
   const handlePlanUpdate = (updatedPlan) => {
@@ -82,10 +115,7 @@ export default function Home() {
     savePlan(updatedPlan);
     setAllPlans(prev => prev.map(p => p.id === updatedPlan.id ? updatedPlan : p));
     setActivePlan(updatedPlan);
-    toast({
-      title: "تم تحديث الخطة",
-      description: `تم حفظ التغييرات في "${updatedPlan.name}".`,
-    });
+    showCustomToast('success', 'تم تحديث الخطة', `تم حفظ التغييرات في "${updatedPlan.name}".`);
   };
 
   const handleDeletePlan = (id) => {
@@ -126,14 +156,10 @@ export default function Home() {
     setEditingPlan(null);
   };
 
-  // ==================== التصدير والاستيراد ====================
   const handleExport = () => {
     const plans = loadAllPlans();
     if (plans.length === 0) {
-      toast({
-        title: "لا توجد خطط",
-        description: "ليس لديك أي خطط لحفظها كنسخة احتياطية.",
-      });
+      showCustomToast('info', 'لا توجد خطط', 'ليس لديك أي خطط لحفظها كنسخة احتياطية.');
       return;
     }
     const dataStr = JSON.stringify(plans, null, 2);
@@ -146,10 +172,7 @@ export default function Home() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    toast({
-      title: "تم التصدير بنجاح",
-      description: `تم تصدير ${plans.length} خطة كملف JSON.`,
-    });
+    showCustomToast('success', 'تم التصدير بنجاح', `تم تصدير ${plans.length} خطة كملف JSON.`);
   };
 
   const handleImport = (event) => {
@@ -160,42 +183,26 @@ export default function Home() {
       try {
         const importedPlans = JSON.parse(e.target.result);
         if (!Array.isArray(importedPlans) || importedPlans.length === 0) {
-          toast({
-            title: "ملف غير صالح",
-            description: "الملف لا يحتوي على خطط صالحة.",
-            variant: "destructive",
-          });
+          showCustomToast('error', 'ملف غير صالح', 'الملف لا يحتوي على خطط صالحة.');
           return;
         }
-        // استبدال جميع الخطط الحالية
         if (window.confirm(`سيتم استبدال جميع الخطط الحالية (عددها ${allPlans.length}) بالخطط المستوردة (عددها ${importedPlans.length}). هل أنت متأكد؟`)) {
           saveAllPlans(importedPlans);
-          // إعادة تحميل الحالة
           const reloadedPlans = loadAllPlans();
           setAllPlans(reloadedPlans);
           const active = loadActivePlan();
           setActivePlan(active);
           setShowCreateForm(reloadedPlans.length === 0);
-          // ✅ عرض رسالة نجاح واحدة فقط
-          toast({
-            title: "تم الاستيراد بنجاح",
-            description: `تم استيراد ${importedPlans.length} خطة.`,
-          });
+          showCustomToast('success', 'تم الاستيراد بنجاح', `تم استيراد ${importedPlans.length} خطة.`);
         }
       } catch (err) {
-        toast({
-          title: "خطأ في الاستيراد",
-          description: "الملف غير صالح أو تالف.",
-          variant: "destructive",
-        });
+        showCustomToast('error', 'خطأ في الاستيراد', 'الملف غير صالح أو تالف.');
       }
     };
     reader.readAsText(file);
-    // إعادة تعيين قيمة الإدخال
     event.target.value = null;
   };
 
-  // شاشة الخطأ
   if (error) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4" dir="rtl">
@@ -243,7 +250,6 @@ export default function Home() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {/* ✅ أزرار التصدير والاستيراد */}
             <div className="flex items-center gap-1">
               <Button
                 variant="ghost"
@@ -264,10 +270,6 @@ export default function Home() {
                 />
               </label>
             </div>
-
-            {/* ❌ تم إزالة زر التعديل من هنا */}
-
-            {/* زر الوضع المظلم */}
             <button onClick={toggleDarkMode} className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors">
               {isDark ? <Sun className="w-4 h-4 text-foreground" /> : <Moon className="w-4 h-4 text-foreground" />}
             </button>
@@ -301,9 +303,8 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* Sheet للتعديل */}
       <Sheet open={isEditSheetOpen} onOpenChange={setIsEditSheetOpen}>
-        <SheetContent side="bottom" className="h-[95vh] overflow-y-auto rounded-t-3xl p-0">
+        <SheetContent side="bottom" className="h-[95vh] overflow-y-auto rounded-t-3xl p-0" dir="rtl">
           <div className="p-6">
             <SheetHeader className="mb-4">
               <SheetTitle>تعديل الخطة</SheetTitle>
